@@ -36,16 +36,13 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="relative">
-              <span className="text-xl md:text-2xl font-display font-bold text-gradient">
-                KRIVVASS
-              </span>
-              <span className="text-xl md:text-2xl font-display font-bold text-foreground">
-                '26
-              </span>
-            </div>
+          {/* Logo - Replace src with your logo */}
+          <a href="#" className="flex items-center">
+            <img 
+              src="/logo.png" 
+              alt="KRIVVASS'26" 
+              className="h-10 md:h-12 w-auto object-contain"
+            />
           </a>
 
           {/* Desktop Navigation */}
