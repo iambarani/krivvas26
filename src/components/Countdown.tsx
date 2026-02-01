@@ -84,10 +84,9 @@ const Countdown = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
+          <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
             The Countdown Begins
           </h2>
-          <p className="text-muted-foreground">March 15-17, 2026</p>
         </motion.div>
 
         <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap">
