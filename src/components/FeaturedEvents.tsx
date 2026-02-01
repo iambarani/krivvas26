@@ -1,191 +1,136 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Music, Mic2, Palette, Camera, Theater } from 'lucide-react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const events = [
   {
     id: 1,
-    title: 'Battle of Bands',
-    category: 'Music',
-    description: 'Witness the ultimate musical showdown',
-    icon: Music,
-    gradient: 'from-purple-500 to-pink-500',
+    title: "Artisan Heights – Tower Building",
+    image: "/events/artisan.jpg",
   },
   {
     id: 2,
-    title: 'Stand-up Night',
-    category: 'Comedy',
-    description: 'Laugh out loud with the best comedians',
-    icon: Mic2,
-    gradient: 'from-blue-500 to-cyan-500',
+    title: "Flavors Unleashed – Fireless Cooking",
+    image: "/events/cooking.jpg",
   },
   {
     id: 3,
-    title: 'Art Exhibition',
-    category: 'Art',
-    description: 'Explore creative masterpieces',
-    icon: Palette,
-    gradient: 'from-orange-500 to-yellow-500',
+    title: "Silent Spectacle – Mime",
+    image: "/events/mime.jpg",
   },
   {
     id: 4,
-    title: 'Photography Contest',
-    category: 'Photography',
-    description: 'Capture moments that matter',
-    icon: Camera,
-    gradient: 'from-green-500 to-teal-500',
+    title: "Groovista – Group Dance",
+    image: "/events/dance.jpg",
   },
   {
     id: 5,
-    title: 'Drama Festival',
-    category: 'Theatre',
-    description: 'Experience powerful performances',
-    icon: Theater,
-    gradient: 'from-red-500 to-rose-500',
+    title: "Brain Buster",
+    image: "/events/brain.jpg",
   },
 ];
 
-const FeaturedEvents = () => {
+export default function FeaturedEvents() {
   const [centerIndex, setCenterIndex] = useState(2);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToIndex = (index: number) => {
-    const newIndex = Math.max(0, Math.min(events.length - 1, index));
-    setCenterIndex(newIndex);
-  };
+  const prev = () =>
+    setCenterIndex((i) => Math.max(0, i - 1));
+  const next = () =>
+    setCenterIndex((i) => Math.min(events.length - 1, i + 1));
 
   return (
-    <section id="events" className="relative py-24 overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-radial from-primary/5 via-transparent to-transparent blur-3xl pointer-events-none" />
+    <section className="relative py-28 bg-black overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 via-black to-black" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="section-title">
-            <span className="text-gradient">Featured</span> Events
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        {/* Heading */}
+        <div className="text-center mb-20">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-wide">
+            <span className="text-purple-400">Featured</span> Events
           </h2>
-          <p className="section-subtitle">
-            Discover the incredible lineup of events that await you at KRIVVASS'26
-          </p>
-        </motion.div>
+        </div>
 
-        {/* Events Slider */}
-        <div className="relative">
-          {/* Navigation Buttons */}
+        {/* Slider */}
+        <div className="relative flex items-center justify-center h-[28rem]">
+          {/* Left Arrow */}
           <button
-            onClick={() => scrollToIndex(centerIndex - 1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 glass-card-hover rounded-full hidden md:flex"
+            onClick={prev}
             disabled={centerIndex === 0}
+            className="absolute left-4 z-30 p-3 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition disabled:opacity-30"
           >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={() => scrollToIndex(centerIndex + 1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 glass-card-hover rounded-full hidden md:flex"
-            disabled={centerIndex === events.length - 1}
-          >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6 text-white" />
           </button>
 
-          {/* Cards Container */}
-          <div
-            ref={scrollRef}
-            className="flex items-center justify-center gap-4 md:gap-6 py-8 px-4 md:px-16"
-          >
+          {/* Cards */}
+          <div className="relative flex items-center justify-center w-full h-full">
             {events.map((event, index) => {
-              const isCenter = index === centerIndex;
               const offset = index - centerIndex;
-              const Icon = event.icon;
+              const isCenter = offset === 0;
 
               return (
                 <motion.div
                   key={event.id}
                   animate={{
-                    scale: isCenter ? 1.05 : 0.9,
-                    opacity: Math.abs(offset) > 2 ? 0 : isCenter ? 1 : 0.6,
-                    x: offset * 20,
-                    rotateY: offset * -5,
+                    scale: isCenter ? 1.15 : 0.9,
+                    opacity: Math.abs(offset) > 2 ? 0 : isCenter ? 1 : 0.4,
+                    rotateY: offset * -12,
+                    x: offset * 140,
+                    zIndex: isCenter ? 20 : 10 - Math.abs(offset),
                   }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  transition={{ duration: 0.45, ease: "easeOut" }}
                   onClick={() => setCenterIndex(index)}
-                  className={`flex-shrink-0 w-64 md:w-72 cursor-pointer ${
-                    isCenter ? 'event-card-center' : 'event-card'
-                  }`}
+                  className="absolute cursor-pointer"
                   style={{
-                    transformStyle: 'preserve-3d',
-                    perspective: '1000px',
+                    transformStyle: "preserve-3d",
+                    perspective: "1200px",
                   }}
                 >
-                  {/* Card Content */}
-                  <div className="relative p-6">
-                    {/* Icon with gradient background */}
-                    <div
-                      className={`w-14 h-14 rounded-xl bg-gradient-to-br ${event.gradient} flex items-center justify-center mb-4`}
-                    >
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
+                  {/* Card */}
+                  <div className="relative w-64 h-80 md:w-72 md:h-[22rem] rounded-2xl overflow-hidden shadow-2xl">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover"
+                    />
 
-                    {/* Category Badge */}
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground mb-2 block">
-                      {event.category}
-                    </span>
+                    {/* Dark overlay for side cards */}
+                    {!isCenter && (
+                      <div className="absolute inset-0 bg-black/60" />
+                    )}
 
                     {/* Title */}
-                    <h3 className="text-xl font-display font-semibold text-foreground mb-2">
-                      {event.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground">
-                      {event.description}
-                    </p>
-
-                    {/* Glow effect for center card */}
-                    {isCenter && (
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
-                    )}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                      <h3 className="text-sm md:text-base font-semibold text-white text-center">
+                        {event.title}
+                      </h3>
+                    </div>
                   </div>
                 </motion.div>
               );
             })}
           </div>
 
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-8">
-            {events.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCenterIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === centerIndex
-                    ? 'w-8 bg-primary'
-                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                }`}
-              />
-            ))}
-          </div>
+          {/* Right Arrow */}
+          <button
+            onClick={next}
+            disabled={centerIndex === events.length - 1}
+            className="absolute right-4 z-30 p-3 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition disabled:opacity-30"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
         </div>
 
         {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex justify-center gap-4 mt-12"
-        >
-          <button className="btn-outline">View All Events</button>
-          <button className="btn-primary">Register Now</button>
-        </motion.div>
+        <div className="flex justify-center gap-4 mt-20">
+          <button className="px-6 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition">
+            View All Events
+          </button>
+          <button className="px-6 py-2 rounded-full bg-purple-600 text-white hover:bg-purple-700 transition">
+            Register Now
+          </button>
+        </div>
       </div>
     </section>
   );
-};
-
-export default FeaturedEvents;
+}

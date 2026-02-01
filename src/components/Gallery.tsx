@@ -51,7 +51,7 @@ const Gallery = () => {
             <span className="text-gradient">Glimpse</span> of Past
           </h2>
           <p className="section-subtitle">
-            Relive the incredible moments from KRIVVASS'25
+            Relive the incredible moments from last year
           </p>
         </motion.div>
 
@@ -81,9 +81,11 @@ const Gallery = () => {
                 <h3 className="text-lg font-display font-semibold text-foreground">
                   {image.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  KRIVVASS'25
-                </p>
+                <img
+                  src="https://placehold.co/80x16?text=Logo"
+                  alt="Placeholder logo"
+                  className="mt-1 h-4 w-20 object-contain"
+                />
               </div>
 
               {/* Glow border on hover */}

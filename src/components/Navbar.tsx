@@ -35,9 +35,9 @@ const Navbar = () => {
           scrolled ? 'navbar-scrolled py-2' : ''
         }`}
       >
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
           {/* Logo - Replace src with your logo */}
-          <a href="#" className="flex items-center">
+          <a href="#" className="flex items-center flex-shrink-0 z-10">
             <img 
               src="/logo.png" 
               alt="KRIVVASS'26" 
@@ -45,8 +45,8 @@ const Navbar = () => {
             />
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation - Absolutely Centered */}
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -60,7 +60,7 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0 z-10">
             <button className="px-5 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300">
               Login
             </button>

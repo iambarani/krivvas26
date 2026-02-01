@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
 import heroBg from '@/assets/hero-bg.jpg';
+import Particles from '@/components/Particles';
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <img
           src={heroBg}
           alt="Concert background"
@@ -16,10 +17,25 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
       </div>
 
+      {/* Particle Layer */}
+      <div className="absolute inset-0 z-[1]">
+        <Particles
+          particleColors={["#ffffff"]}
+          particleCount={120}
+          particleSpread={24}
+          speed={0.15}
+          particleBaseSize={160}
+          moveParticlesOnHover
+          alphaParticles
+          disableRotation={false}
+          pixelRatio={Math.min(window.devicePixelRatio, 2)}
+        />
+      </div>
+
       {/* Decorative Elements */}
-      <div className="absolute top-1/4 left-10 dot-glow animate-glow-pulse" />
-      <div className="absolute top-1/3 right-20 dot-glow animate-glow-pulse animation-delay-200" />
-      <div className="absolute bottom-1/3 left-1/4 dot-glow animate-glow-pulse animation-delay-400" />
+      <div className="absolute top-1/4 left-10 dot-glow animate-glow-pulse z-[2]" />
+      <div className="absolute top-1/3 right-20 dot-glow animate-glow-pulse animation-delay-200 z-[2]" />
+      <div className="absolute bottom-1/3 left-1/4 dot-glow animate-glow-pulse animation-delay-400 z-[2]" />
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
@@ -43,10 +59,13 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-6"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-6 leading-none"
           >
-            <span className="text-gradient text-glow">KRIVVASS</span>
-            <span className="text-foreground">'26</span>
+            <img
+              src="/assets/"
+              alt="KRIVVASS'26"
+              className="h-[1em] w-auto mx-auto"
+            />
           </motion.h1>
 
           {/* Tagline */}
@@ -81,7 +100,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-xs text-muted-foreground uppercase tracking-widest">
