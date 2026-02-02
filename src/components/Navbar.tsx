@@ -1,81 +1,210 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 
 const navLinks = [
-  { name: 'About', href: '#about' },
+  { name: 'Home', href: '#home' },
   { name: 'Events', href: '#events' },
   { name: 'Gallery', href: '#gallery' },
+  { name: 'Coordinators', href: '#coordinators' },
   { name: 'Contact', href: '#contact' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState('Home');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLinkClick = (name: string) => {
+    setActiveLink(name);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl transition-all duration-500 ${
-        scrolled ? 'top-2' : 'top-4'
-      }`}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed top-0 left-0 right-0 z-50"
     >
       <div
-        className={`navbar-glass rounded-2xl px-6 py-3 transition-all duration-500 ${
-          scrolled ? 'navbar-scrolled py-2' : ''
-        }`}
+        className={`transition-all duration-500 ease-out ${scrolled
+          ? 'bg-background/95 backdrop-blur-xl shadow-lg shadow-primary/5 border-b border-primary/10'
+          : 'bg-transparent'
+          }`}
       >
-        <div className="relative flex items-center justify-between">
-          {/* Logo - Replace src with your logo */}
-          <a href="#" className="flex items-center flex-shrink-0 z-10">
-            <img 
-              src="/logo.png" 
-              alt="KRIVVASS'26" 
-              className="h-10 md:h-12 w-auto object-contain"
-            />
-          </a>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <motion.a
+              href="#home"
+              className="flex items-center gap-3 group relative z-10"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => handleLinkClick('Home')}
+            >
+              <div className="relative">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary rounded-lg blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <Sparkles className="w-8 h-8 text-primary relative z-10" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-gradient tracking-tight">
+                  KRIVVASS
+                </span>
+                <span className="text-xs text-muted-foreground tracking-widest -mt-1">
+                  '26
+                </span>
+              </div>
+            </motion.a>
 
-          {/* Desktop Navigation - Absolutely Centered */}
-          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 group"
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-1">
+              {navLinks.map((link, index) => (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  onClick={() => handleLinkClick(link.name)}
+                  className="relative px-4 py-2 group"
+                >
+                  <span className={`relative z-10 text-sm font-medium transition-colors duration-300 ${activeLink === link.name
+                    ? 'text-foreground'
+                    : 'text-muted-foreground group-hover:text-foreground'
+                    }`}>
+                    {link.name}
+                  </span>
+
+                  {/* Hover background effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    layoutId={activeLink === link.name ? "activeNav" : undefined}
+                  />
+
+                  {/* Active indicator */}
+                  {activeLink === link.name && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className="absolute bottom-0 left-0 right-0 mx-auto w-[calc(100%-2rem)] h-0.5 bg-gradient-to-r from-primary via-accent to-secondary rounded-full"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30
+                      }}
+                    />
+                  )}
+
+                  {/* Hover underline */}
+                  <span className="absolute bottom-0 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-primary/50 via-accent/50 to-secondary/50 group-hover:w-[calc(100%-2rem)] transition-all duration-500 ease-out rounded-full" />
+                </motion.a>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="hidden md:block"
+            >
+              <motion.button
+                className="relative px-6 py-2.5 rounded-xl font-semibold text-sm text-white overflow-hidden group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-glow-purple to-glow-cyan group-hover:w-full transition-all duration-300" />
-              </a>
-            ))}
-          </div>
+                {/* Animated gradient background */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary"
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                  style={{
+                    backgroundSize: '200% 200%',
+                  }}
+                />
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-3 flex-shrink-0 z-10">
-            <button className="px-5 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Login
-            </button>
-            <button className="btn-primary text-sm !px-5 !py-2">
-              Register
-            </button>
-          </div>
+                {/* Glow effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary blur-xl" />
+                </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-foreground"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+                <span className="relative z-10 flex items-center gap-2">
+                  Register Now
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    →
+                  </motion.span>
+                </span>
+              </motion.button>
+            </motion.div>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              className="md:hidden p-2 text-foreground relative"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              whileTap={{ scale: 0.9 }}
+            >
+              <AnimatePresence mode="wait">
+                {mobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X size={24} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu size={24} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -85,28 +214,41 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden mt-4 pt-4 border-t border-glass-border"
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden border-t border-primary/10 bg-background/95 backdrop-blur-xl"
             >
-              <div className="flex flex-col gap-4">
-                {navLinks.map((link) => (
-                  <a
+              <div className="px-4 py-6 space-y-1">
+                {navLinks.map((link, index) => (
+                  <motion.a
                     key={link.name}
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: index * 0.05,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    onClick={() => handleLinkClick(link.name)}
+                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${activeLink === link.name
+                      ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
+                      }`}
                   >
                     {link.name}
-                  </a>
+                  </motion.a>
                 ))}
-                <div className="flex gap-3 pt-4">
-                  <button className="flex-1 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Login
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: navLinks.length * 0.05 }}
+                  className="pt-4"
+                >
+                  <button className="w-full btn-primary text-base !py-3">
+                    Register Now
                   </button>
-                  <button className="flex-1 btn-primary text-sm !py-2">
-                    Register
-                  </button>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           )}
