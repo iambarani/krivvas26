@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sparkles } from 'lucide-react';
 
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Events', href: '/events' },
-  { name: 'Gallery', href: '#gallery' },
+  { name: 'Gallery', href: '/gallery' },
   { name: 'Coordinators', href: '#coordinators' },
   { name: 'Contact', href: '#contact' },
 ];
@@ -15,6 +15,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,22 @@ const Navbar = () => {
   const isActiveLink = (href: string) => {
     if (href.startsWith('#')) return false;
     return location.pathname === href;
+  };
+
+  const handleAnchorLinkClick = (anchor: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+
+    // If already on home page, just scroll
+    if (location.pathname === '/') {
+      const element = document.getElementById(anchor.slice(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Navigate to home with hash, scroll will be handled by Index component
+      navigate(`/#${anchor.slice(1)}`);
+    }
   };
 
   const handleLinkClick = () => {
@@ -103,7 +120,7 @@ const Navbar = () => {
                     {isAnchorLink ? (
                       <a
                         href={link.href}
-                        onClick={handleLinkClick}
+                        onClick={(e) => handleAnchorLinkClick(link.href, e)}
                         className="relative px-4 py-2 group"
                       >
                         <span className={`relative z-10 text-sm font-medium transition-colors duration-300 ${isActive
@@ -288,7 +305,7 @@ const Navbar = () => {
                       {isAnchorLink ? (
                         <a
                           href={link.href}
-                          onClick={handleLinkClick}
+                          onClick={(e) => handleAnchorLinkClick(link.href, e)}
                           className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${isActive
                             ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 text-foreground'
                             : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
