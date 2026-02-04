@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sparkles } from 'lucide-react';
 
 const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'Events', href: '#events' },
+  { name: 'Home', href: '/' },
+  { name: 'Events', href: '/events' },
   { name: 'Gallery', href: '#gallery' },
   { name: 'Coordinators', href: '#coordinators' },
   { name: 'Contact', href: '#contact' },
@@ -13,7 +14,7 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('Home');
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,8 +24,12 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkClick = (name: string) => {
-    setActiveLink(name);
+  const isActiveLink = (href: string) => {
+    if (href.startsWith('#')) return false;
+    return location.pathname === href;
+  };
+
+  const handleLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
@@ -44,84 +49,131 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.a
-              href="#home"
+            <motion.div
               className="flex items-center gap-3 group relative z-10"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => handleLinkClick('Home')}
             >
-              <div className="relative">
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary rounded-lg blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-                <Sparkles className="w-8 h-8 text-primary relative z-10" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gradient tracking-tight">
-                  KRIVVASS
-                </span>
-                <span className="text-xs text-muted-foreground tracking-widest -mt-1">
-                  '26
-                </span>
-              </div>
-            </motion.a>
+              <Link
+                to="/"
+                className="flex items-center gap-3"
+                onClick={handleLinkClick}
+              >
+                <div className="relative">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary rounded-lg blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  <Sparkles className="w-8 h-8 text-primary relative z-10" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold text-gradient tracking-tight">
+                    KRIVVASS
+                  </span>
+                  <span className="text-xs text-muted-foreground tracking-widest -mt-1">
+                    '26
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link, index) => (
-                <motion.a
-                  key={link.name}
-                  href={link.href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  onClick={() => handleLinkClick(link.name)}
-                  className="relative px-4 py-2 group"
-                >
-                  <span className={`relative z-10 text-sm font-medium transition-colors duration-300 ${activeLink === link.name
-                    ? 'text-foreground'
-                    : 'text-muted-foreground group-hover:text-foreground'
-                    }`}>
-                    {link.name}
-                  </span>
-
-                  {/* Hover background effect */}
+              {navLinks.map((link, index) => {
+                const isActive = isActiveLink(link.href);
+                const isAnchorLink = link.href.startsWith('#');
+                
+                return (
                   <motion.div
-                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    layoutId={activeLink === link.name ? "activeNav" : undefined}
-                  />
+                    key={link.name}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    className="relative"
+                  >
+                    {isAnchorLink ? (
+                      <a
+                        href={link.href}
+                        onClick={handleLinkClick}
+                        className="relative px-4 py-2 group"
+                      >
+                        <span className={`relative z-10 text-sm font-medium transition-colors duration-300 ${isActive
+                          ? 'text-foreground'
+                          : 'text-muted-foreground group-hover:text-foreground'
+                          }`}>
+                          {link.name}
+                        </span>
 
-                  {/* Active indicator */}
-                  {activeLink === link.name && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 mx-auto w-[calc(100%-2rem)] h-0.5 bg-gradient-to-r from-primary via-accent to-secondary rounded-full"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30
-                      }}
-                    />
-                  )}
+                        {/* Hover background effect */}
+                        <motion.div
+                          className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          layoutId={isActive ? "activeNav" : undefined}
+                        />
 
-                  {/* Hover underline */}
-                  <span className="absolute bottom-0 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-primary/50 via-accent/50 to-secondary/50 group-hover:w-[calc(100%-2rem)] transition-all duration-500 ease-out rounded-full" />
-                </motion.a>
-              ))}
+                        {/* Active indicator */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className="absolute bottom-0 left-0 right-0 mx-auto w-[calc(100%-2rem)] h-0.5 bg-gradient-to-r from-primary via-accent to-secondary rounded-full"
+                            transition={{
+                              type: "spring",
+                              stiffness: 380,
+                              damping: 30
+                            }}
+                          />
+                        )}
+
+                        {/* Hover underline */}
+                        <span className="absolute bottom-0 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-primary/50 via-accent/50 to-secondary/50 group-hover:w-[calc(100%-2rem)] transition-all duration-500 ease-out rounded-full" />
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        onClick={handleLinkClick}
+                        className="relative px-4 py-2 group"
+                      >
+                        <span className={`relative z-10 text-sm font-medium transition-colors duration-300 ${isActive
+                          ? 'text-foreground'
+                          : 'text-muted-foreground group-hover:text-foreground'
+                          }`}>
+                          {link.name}
+                        </span>
+
+                        {/* Hover background effect */}
+                        <motion.div
+                          className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          layoutId={isActive ? "activeNav" : undefined}
+                        />
+
+                        {/* Active indicator */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className="absolute bottom-0 left-0 right-0 mx-auto w-[calc(100%-2rem)] h-0.5 bg-gradient-to-r from-primary via-accent to-secondary rounded-full"
+                            transition={{
+                              type: "spring",
+                              stiffness: 380,
+                              damping: 30
+                            }}
+                          />
+                        )}
+
+                        {/* Hover underline */}
+                        <span className="absolute bottom-0 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-primary/50 via-accent/50 to-secondary/50 group-hover:w-[calc(100%-2rem)] transition-all duration-500 ease-out rounded-full" />
+                      </Link>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
 
             {/* CTA Button */}
@@ -218,26 +270,47 @@ const Navbar = () => {
               className="md:hidden border-t border-primary/10 bg-background/95 backdrop-blur-xl"
             >
               <div className="px-4 py-6 space-y-1">
-                {navLinks.map((link, index) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.05,
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
-                    onClick={() => handleLinkClick(link.name)}
-                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${activeLink === link.name
-                      ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 text-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
-                      }`}
-                  >
-                    {link.name}
-                  </motion.a>
-                ))}
+                {navLinks.map((link, index) => {
+                  const isActive = isActiveLink(link.href);
+                  const isAnchorLink = link.href.startsWith('#');
+
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: 0.3,
+                        delay: index * 0.05,
+                        ease: [0.22, 1, 0.36, 1]
+                      }}
+                    >
+                      {isAnchorLink ? (
+                        <a
+                          href={link.href}
+                          onClick={handleLinkClick}
+                          className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${isActive
+                            ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 text-foreground'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
+                            }`}
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          onClick={handleLinkClick}
+                          className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${isActive
+                            ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 text-foreground'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
+                            }`}
+                        >
+                          {link.name}
+                        </Link>
+                      )}
+                    </motion.div>
+                  );
+                })}
 
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
