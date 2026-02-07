@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import heroBg from '@/assets/hero-bg.jpg';
 import Particles from '@/components/Particles';
+import ShinyText from './ShinyText';
 
 const Hero = () => {
   return (
@@ -56,17 +57,20 @@ const Hero = () => {
 
           {/* Main Title */}
           <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-6 leading-none"
-          >
-            <img
-              src="/assets/"
-              alt="KRIVVASS'26"
-              className="h-[1em] w-auto mx-auto"
-            />
-          </motion.h1>
+  initial={{ opacity: 0, scale: 0.9 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, delay: 0.3 }}
+  className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-6 leading-none"
+>
+  <ShinyText
+    text="KRIVVASS'26"
+    speed={3.5}
+    color="#ffffff"
+    shineColor="#8b5cf6"
+    spread={75}
+  />
+</motion.h1>
+
 
           {/* Tagline */}
           <motion.p
@@ -85,7 +89,15 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <button className="btn-primary text-lg">
+            <button
+              className="btn-primary text-lg"
+              onClick={() => {
+                const target = document.getElementById("featured-events");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
               Explore Events
             </button>
             <button className="btn-outline text-lg">

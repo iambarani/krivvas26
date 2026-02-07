@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -32,6 +33,7 @@ const events = [
 
 export default function FeaturedEvents() {
   const [centerIndex, setCenterIndex] = useState(2);
+  const navigate = useNavigate();
 
   const prev = () =>
     setCenterIndex((i) => Math.max(0, i - 1));
@@ -39,7 +41,7 @@ export default function FeaturedEvents() {
     setCenterIndex((i) => Math.min(events.length - 1, i + 1));
 
   return (
-    <section className="relative py-28 bg-black overflow-hidden">
+    <section id="featured-events" className="relative py-28 bg-black overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 via-black to-black" />
 
@@ -123,7 +125,10 @@ export default function FeaturedEvents() {
 
         {/* Action Buttons */}
         <div className="flex justify-center gap-4 mt-20">
-          <button className="px-6 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition">
+          <button
+            onClick={() => navigate("/events")}
+            className="px-6 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+          >
             View All Events
           </button>
           <button className="px-6 py-2 rounded-full bg-purple-600 text-white hover:bg-purple-700 transition">

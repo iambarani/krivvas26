@@ -115,21 +115,6 @@ const Contact = () => {
           })}
         </div>
 
-        {/* Divider Line */}
-        <div className="line-glow mt-20 mb-8 max-w-2xl mx-auto" />
-
-        {/* Footer Text */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center"
-        >
-          <p className="text-muted-foreground text-sm">
-            © 2026 KRIVVASS. Krishna University. All rights reserved.
-          </p>
-        </motion.div>
       </div>
     </section>
   );

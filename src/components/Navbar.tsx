@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sparkles } from 'lucide-react';
+import logo from '../assets/logo.png';
+
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -86,15 +88,14 @@ const Navbar = () => {
                       ease: "easeInOut"
                     }}
                   />
-                  <Sparkles className="w-8 h-8 text-primary relative z-10" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xl font-bold text-gradient tracking-tight">
-                    KRIVVASS
-                  </span>
-                  <span className="text-xs text-muted-foreground tracking-widest -mt-1">
-                    '26
-                  </span>
+                  <img
+                    src={logo}
+                    alt="KRIVVASS'26 logo"
+                    className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain relative z-10"
+
+
+
+                  />
                 </div>
               </Link>
             </motion.div>
@@ -223,9 +224,11 @@ const Navbar = () => {
                 />
 
                 {/* Glow effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary blur-xl" />
-                </div>
+<div className="absolute inset-0 opacity-0 group-hover:opacity-25 transition-opacity duration-500">
+  <div className="absolute inset-1 rounded-full bg-gradient-to-r from-primary via-accent to-secondary blur-md" />
+</div>
+
+
 
                 <span className="relative z-10 flex items-center gap-2">
                   Register Now

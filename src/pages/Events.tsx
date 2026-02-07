@@ -151,39 +151,11 @@ export default function Events() {
   };
 
   return (
-    <main className="min-h-screen bg-background overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden bg-black">
       <Navbar />
 
       {/* Page Header */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-b from-purple-900/20 via-background to-background overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full blur-3xl opacity-20"
-            animate={{
-              y: [0, -30, 0],
-              x: [0, 30, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-cyan-600 to-purple-600 rounded-full blur-3xl opacity-20"
-            animate={{
-              y: [0, 30, 0],
-              x: [0, -30, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </div>
-
+      <section className="relative pt-28 pb-10 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -205,7 +177,7 @@ export default function Events() {
       </section>
 
       {/* Categories Filter */}
-      <section className="relative py-12 bg-background/50 backdrop-blur-sm border-b border-primary/10">
+      <section className="relative py-6 backdrop-blur-sm border-b border-primary/10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((category, index) => (
@@ -235,7 +207,7 @@ export default function Events() {
       </section>
 
       {/* Events Grid */}
-      <section className="relative py-20 bg-background overflow-hidden">
+      <section className="relative py-12 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
             layout
@@ -247,12 +219,12 @@ export default function Events() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative"
+                className="group relative h-full"
               >
                 {/* Card Container */}
                 <div
                   onClick={() => handleCardClick(event)}
-                  className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-pointer"
+                  className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-pointer flex flex-col"
                 >
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden bg-gradient-to-br from-purple-900 to-black">
@@ -278,13 +250,14 @@ export default function Events() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 relative z-10">
+                  <div className="p-6 relative z-10 flex flex-col h-full">
                     <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary transition-all duration-300">
                       {event.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                       {event.description}
                     </p>
+                    <div className="flex-1" />
 
                     {/* Register Button */}
                     <motion.button
@@ -349,20 +322,7 @@ export default function Events() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-20 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 border-t border-primary/10 overflow-hidden">
-        {/* Background Effects */}
-        <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full blur-3xl opacity-10"
-          animate={{
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
+      <section className="relative py-20 border-t border-primary/10 overflow-hidden">
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
