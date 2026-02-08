@@ -52,6 +52,11 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   };
 
+  const handleRegisterClick = () => {
+    setMobileMenuOpen(false);
+    navigate("/register");
+  };
+
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
@@ -206,6 +211,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
+                onClick={handleRegisterClick}
               >
                 {/* Animated gradient background */}
                 <motion.div
@@ -338,7 +344,10 @@ const Navbar = () => {
                   transition={{ duration: 0.3, delay: navLinks.length * 0.05 }}
                   className="pt-4"
                 >
-                  <button className="w-full btn-primary text-base !py-3">
+                  <button
+                    className="w-full btn-primary text-base !py-3"
+                    onClick={handleRegisterClick}
+                  >
                     Register Now
                   </button>
                 </motion.div>

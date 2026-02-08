@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from "react-router-dom";
 import heroBg from '@/assets/hero-bg.jpg';
 import Particles from '@/components/Particles';
 import ShinyText from './ShinyText';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
@@ -100,7 +103,10 @@ const Hero = () => {
             >
               Explore Events
             </button>
-            <button className="btn-outline text-lg">
+            <button
+              className="btn-outline text-lg"
+              onClick={() => navigate("/register")}
+            >
               Register Now
             </button>
           </motion.div>

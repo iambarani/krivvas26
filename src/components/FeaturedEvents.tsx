@@ -131,7 +131,10 @@ export default function FeaturedEvents() {
           >
             View All Events
           </button>
-          <button className="px-6 py-2 rounded-full bg-purple-600 text-white hover:bg-purple-700 transition">
+          <button
+            className="px-6 py-2 rounded-full bg-purple-600 text-white hover:bg-purple-700 transition"
+            onClick={() => navigate("/register")}
+          >
             Register Now
           </button>
         </div>
